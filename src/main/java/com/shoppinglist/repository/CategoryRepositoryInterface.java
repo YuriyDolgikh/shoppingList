@@ -10,6 +10,6 @@ public interface CategoryRepositoryInterface {
     List<Category> findAll();
     Optional<Category> findById(Long id);
     Optional<Category> findByName(String name);
-    Optional<Category> updateNameById(Long id, String name);
+    Optional<Category> update(Category category);
     Optional<Category> deleteById(Long id);
 }

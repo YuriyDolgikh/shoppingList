@@ -1,6 +1,5 @@
 package com.shoppinglist.service;
 
-import com.shoppinglist.dto.RequestAddCategoryDto;
 import com.shoppinglist.dto.RequestUpdateCategoryDto;
 import com.shoppinglist.dto.ResponseCategoryDto;
 import com.shoppinglist.entity.Category;
@@ -15,18 +14,29 @@ import java.util.Optional;
 public class UpdateCategoryService {
     private CategoryRepositoryInterface repository;
 
-    public String updateNameCategoryById(RequestUpdateCategoryDto request){
+    /**
+     * Update category name by id
+     * @param request RequestUpdateCategoryDto - request with category id and new category name
+     * @return Optional<ResponseCategoryDto> - category with id and name if category was updated or name already exists,
+     * empty otherwise if id is not found
+     */
+    public Optional<ResponseCategoryDto> updateNameCategoryById(RequestUpdateCategoryDto request){
         String nameForCheck = request.getName();
         if (!isCategoryNameUnique(nameForCheck)) {
-            return "Category with name = " + nameForCheck + " already exists";
+            return Optional.of(new ResponseCategoryDto(repository.findByName(nameForCheck).get().getId(), nameForCheck));
         }
-        Optional<Category> updatedCategoryOptional = repository.updateNameById(request.getId(), request.getName());
+        Optional<Category> updatedCategoryOptional = repository.update(new Category(request.getId(), request.getName()));
         if (updatedCategoryOptional.isPresent()) {
-            return updatedCategoryOptional.get().toString();
+            return Optional.of(new ResponseCategoryDto(updatedCategoryOptional.get().getId(), nameForCheck));
         }
-        return "Category with ID = " + request.getId() + " not found";
+        return Optional.empty();
     }
 
+    /**
+     * Check if the category name is unique in the database
+     * @param name category name
+     * @return boolean - true if the category name is unique, false otherwise
+     */
     private boolean isCategoryNameUnique(String name){
         return repository.findByName(name).isEmpty();
     }

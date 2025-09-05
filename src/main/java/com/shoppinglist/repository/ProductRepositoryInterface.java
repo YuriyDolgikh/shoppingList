@@ -10,11 +10,9 @@ public interface ProductRepositoryInterface {
     List<Product> findAll();
     Optional<Product> findById(Long id);
     Optional<Product> findByName(String name);
-    List<Product> findByIsPurchased(boolean isPurchased);
+    List<Product> findByPurchased(boolean purchased);
     List<Product> findByCategoryId(Long categoryId);
     List<Product> findByCategoryName(String categoryName);
-    Optional<Product> updateNameById(Long id, String name);
-    Optional<Product> updateQuantityById(Long id, Double quantity);
-    Optional<Product> updateIsPurchasedById(Long id, boolean isPurchased);
+    Optional<Product> update(Product product);
     Optional<Product> deleteById(Long id);
 }

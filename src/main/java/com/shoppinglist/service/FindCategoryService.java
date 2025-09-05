@@ -15,26 +15,43 @@ public class FindCategoryService {
 
     private CategoryRepositoryInterface repository;
 
+    /**
+     * Find all categories from the database
+     * @return List<ResponseCategoryDto> - list of categories (DTO Class: ResponseCategoryDto)
+     */
     public List<ResponseCategoryDto> findAll(){
         return repository.findAll().stream()
                 .map(category -> new ResponseCategoryDto(category.getId(), category.getName()))
                 .toList();
     }
 
-    public String findBiId(Long id){
+    /**
+     * Find category by id
+     * @param id category id to find
+     * @return Optional<ResponseCategoryDto> - category with id and name if category was found, empty otherwise
+     */
+    public Optional<ResponseCategoryDto> findBiId(Long id){
         Optional<Category> categoryOptional = repository.findById(id);
         if (categoryOptional.isPresent()) {
-            return categoryOptional.get().toString();
+            return Optional.of(new ResponseCategoryDto(categoryOptional.get().getId(), categoryOptional.get().getName()));
         }
-        return "Category with ID = " + id + " not found";
+        return Optional.empty();
     }
 
-    public String findByName(String name){
+    /**
+     * Find category by name
+     * @param name category name to find
+     * @return String - message about success or failure
+     */
+    public Optional<ResponseCategoryDto> findByName(String name){
         Optional<Category> categoryOptional = repository.findByName(name);
         if (categoryOptional.isPresent()) {
-            return categoryOptional.get().toString();
+            return Optional.of(new ResponseCategoryDto(categoryOptional.get().getId(), categoryOptional.get().getName()));
         }
-        return "Category with name = " + name + " not found";
+        return Optional.empty();
     }
 
+    public Optional<Category> findByNameForCreatingProduct(String name){
+        return repository.findByName(name);
+    }
 }

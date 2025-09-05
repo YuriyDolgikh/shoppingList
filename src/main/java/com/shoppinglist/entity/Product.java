@@ -11,13 +11,14 @@ public class Product {
     private Long id;
     private String name;
     private Double quantity;
-    private boolean isPurchased;
+    private boolean purchased;
     private Category category;
 
-    public Product(String name, Double quantity, boolean isPurchased, Category category) {
+    public Product(String name, Double quantity, boolean purchased, Category category) {
         this.name = name;
         this.quantity = quantity;
-        this.isPurchased = isPurchased;
+        this.purchased = purchased;
         this.category = category;
     }
+
 }

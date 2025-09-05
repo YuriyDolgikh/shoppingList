@@ -11,6 +11,6 @@ public class RequestAddProductDto {
     private String name;
     private Double quantity;
     private boolean isPurchased;
-    private Category category;
+    private String categoryName;
 
 }

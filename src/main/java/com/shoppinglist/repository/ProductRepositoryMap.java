@@ -45,54 +45,33 @@ public class ProductRepositoryMap implements ProductRepositoryInterface{
     }
 
     @Override
-    public List<Product> findByIsPurchased(boolean isPurchased) {
-        List<Product> result = products.values().stream()
-                .filter(product -> product.isPurchased() == isPurchased)
+    public List<Product> findByPurchased(boolean purchased) {
+        return products.values().stream()
+                .filter(product -> product.isPurchased() == purchased)
                 .toList();
-        return result;
     }
 
     @Override
     public List<Product> findByCategoryId(Long categoryId) {
-        List<Product> result = products.values().stream()
+        return products.values().stream()
                 .filter(product -> product.getCategory().getId().equals(categoryId))
                 .toList();
-        return result;
     }
 
     @Override
     public List<Product> findByCategoryName(String categoryName) {
-        List<Product> result = products.values().stream()
+        return products.values().stream()
                 .filter(product -> product.getCategory().getName().equalsIgnoreCase(categoryName))
                 .toList();
-        return result;
     }
 
     @Override
-    public Optional<Product> updateNameById(Long id, String name) {
-        Product productToUpdate = products.get(id);
+    public Optional<Product> update(Product product) {
+        Product productToUpdate = products.get(product.getId()) ;
         if (productToUpdate != null) {
-            productToUpdate.setName(name);
-            return Optional.of(productToUpdate);
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Product> updateQuantityById(Long id, Double quantity) {
-        Product productToUpdate = products.get(id);
-        if (productToUpdate != null) {
-            productToUpdate.setQuantity(quantity);
-            return Optional.of(productToUpdate);
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Product> updateIsPurchasedById(Long id, boolean isPurchased) {
-        Product productToUpdate = products.get(id);
-        if (productToUpdate != null) {
-            productToUpdate.setPurchased(isPurchased);
+            productToUpdate.setName(product.getName());
+            productToUpdate.setQuantity(product.getQuantity());
+            productToUpdate.setPurchased(product.isPurchased());
             return Optional.of(productToUpdate);
         }
         return Optional.empty();

@@ -42,10 +42,10 @@ public class CategoryRepositoryMap implements CategoryRepositoryInterface {
     }
 
     @Override
-    public Optional<Category> updateNameById(Long id, String name) {
-        Category categoryToUpdate = categories.get(id) ;
+    public Optional<Category> update(Category category) {
+        Category categoryToUpdate = categories.get(category.getId()) ;
         if (categoryToUpdate != null) {
-            categoryToUpdate.setName(name);
+            categoryToUpdate.setName(category.getName());
             return Optional.of(categoryToUpdate);
         }
         return Optional.empty();
