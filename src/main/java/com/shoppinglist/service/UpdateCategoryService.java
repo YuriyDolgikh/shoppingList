@@ -20,7 +20,7 @@ public class UpdateCategoryService {
      * @return Optional<ResponseCategoryDto> - category with id and name if category was updated or name already exists,
      * empty otherwise if id is not found
      */
-    public Optional<ResponseCategoryDto> updateNameCategoryById(RequestUpdateCategoryDto request){
+    public Optional<ResponseCategoryDto> updateCategory(RequestUpdateCategoryDto request){
         String nameForCheck = request.getName();
         if (!isCategoryNameUnique(nameForCheck)) {
             return Optional.of(new ResponseCategoryDto(repository.findByName(nameForCheck).get().getId(), nameForCheck));
