@@ -44,7 +44,11 @@ public class FindCategoryService {
         return new MainResponse<>(HttpStatus.NOT_FOUND, "Category with name [" + name + "] not found", null);
     }
 
-    public Optional<Category> findByNameForCreatingProduct(String name){
+    public Optional<Category> findByNameForProductServices(String name){
         return repository.findByName(name);
+    }
+
+    public Optional<Category> findByIdForProductServices(Long id){
+        return repository.findById(id);
     }
 }

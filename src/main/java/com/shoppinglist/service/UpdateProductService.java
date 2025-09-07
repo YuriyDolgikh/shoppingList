@@ -2,9 +2,11 @@ package com.shoppinglist.service;
 
 import com.shoppinglist.dto.RequestUpdateProductDto;
 import com.shoppinglist.dto.ResponseProductDto;
+import com.shoppinglist.entity.MainResponse;
 import com.shoppinglist.entity.Product;
 import com.shoppinglist.repository.ProductRepositoryInterface;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,32 +18,23 @@ public class UpdateProductService {
     private ProductRepositoryInterface repository;
     private FindCategoryService findCategoryService;
 
-    public Optional<ResponseProductDto> updateProduct(RequestUpdateProductDto request) {
+    public MainResponse<ResponseProductDto> updateProduct(RequestUpdateProductDto request) {
         String nameForCheck = request.getName();
-        if(!isProductNameUnique(nameForCheck)) {
-            Product productExisted = repository.findByName(nameForCheck).get();
-            return Optional.of(new ResponseProductDto(productExisted.getId(),
-                    productExisted.getName(),
-                    productExisted.getQuantity(),
-                    productExisted.isPurchased(),
-                    productExisted.getCategory().getName()));
+        if (!isProductNameUnique(nameForCheck)) {
+            return new MainResponse<>(HttpStatus.BAD_REQUEST, "Product with name [" + nameForCheck + "] already exist", null);
         }
         Optional<Product> updatedProductOptional = repository.update(new Product(request.getId(),
                 request.getName(),
                 request.getQuantity(),
                 request.isPurchased(),
-                findCategoryService.findByNameForCreatingProduct(request.getCategoryName()).get()));
+                findCategoryService.findByNameForProductServices(request.getCategoryName()).get()));
         if (updatedProductOptional.isPresent()) {
-            return Optional.of(new ResponseProductDto(updatedProductOptional.get().getId(),
-                    updatedProductOptional.get().getName(),
-                    updatedProductOptional.get().getQuantity(),
-                    updatedProductOptional.get().isPurchased(),
-                    updatedProductOptional.get().getCategory().getName()));
+            return new MainResponse<>(HttpStatus.OK, "Product with id [" + request.getId() + "] successfully updated", ResponseProductDto.toDTO(updatedProductOptional.get()));
         }
-        return Optional.empty();
+        return new MainResponse<>(HttpStatus.NOT_FOUND, "Product with id [" + request.getId() + "] not found", null);
     }
 
-    private boolean isProductNameUnique(String name){
+    private boolean isProductNameUnique(String name) {
         return repository.findByName(name).isEmpty();
     }
 

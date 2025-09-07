@@ -41,11 +41,12 @@ public class CategoryController {
     }
 
     @GetMapping("/item")
-    public ResponseEntity<ResponseCategoryDto> findById(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
-        if (id != null && !name.isBlank()) {
+    public ResponseEntity<ResponseCategoryDto> findCategoryWithParams(@RequestParam(required = false, defaultValue = "-1") Long id,
+                                                                      @RequestParam(required = false, defaultValue = "") String name) {
+        if (id != -1 && !name.isBlank()) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
-        if (id != null) {
+        if (id != -1) {
             MainResponse<ResponseCategoryDto> response = findCategoryService.findById(id);
             return response.getStatus().is2xxSuccessful() ? new ResponseEntity<>(response.getResponseObject(), response.getStatus())
                     : new ResponseEntity<>(response.getStatus());
