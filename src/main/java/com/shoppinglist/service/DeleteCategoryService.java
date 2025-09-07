@@ -2,8 +2,10 @@ package com.shoppinglist.service;
 
 import com.shoppinglist.dto.ResponseCategoryDto;
 import com.shoppinglist.entity.Category;
+import com.shoppinglist.entity.MainResponse;
 import com.shoppinglist.repository.CategoryRepositoryInterface;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,17 +15,11 @@ import java.util.Optional;
 public class DeleteCategoryService {
     private CategoryRepositoryInterface repository;
 
-    /**
-     * Delete category from the database by id
-     * @param id category id to delete
-     * @return Optional<ResponseCategoryDto> - category with id and name if category was deleted,
-     * empty otherwise if id is not found
-     */
-    public Optional<ResponseCategoryDto> deleteCategoryById(Long id){
-        Optional<Category> category = repository.deleteById(id);
-        if (category.isPresent()) {
-            return Optional.of(new ResponseCategoryDto(category.get().getId(), category.get().getName()));
+    public MainResponse<ResponseCategoryDto> deleteCategoryById(Long id){
+        Optional<Category> categoryForDelete = repository.deleteById(id);
+        if (categoryForDelete.isPresent()) {
+            return new MainResponse<>(HttpStatus.OK, "Category with id [" + id + "] successfully deleted", ResponseCategoryDto.toDTO(categoryForDelete.get()));
         }
-        return Optional.empty();
+        return new MainResponse<>(HttpStatus.NOT_FOUND, "Category with id [" + id + "] not found", null);
     }
 }
