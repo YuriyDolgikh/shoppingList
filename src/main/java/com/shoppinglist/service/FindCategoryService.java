@@ -3,7 +3,7 @@ package com.shoppinglist.service;
 import com.shoppinglist.dto.ResponseCategoryDto;
 import com.shoppinglist.entity.Category;
 import com.shoppinglist.entity.MainResponse;
-import com.shoppinglist.repository.CategoryRepositoryInterface;
+import com.shoppinglist.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class FindCategoryService {
 
-    private CategoryRepositoryInterface repository;
+    private CategoryRepository repository;
 
     public MainResponse<List<ResponseCategoryDto>> findAll(){
         List<ResponseCategoryDto> categoryDtoList = repository.findAll().stream()

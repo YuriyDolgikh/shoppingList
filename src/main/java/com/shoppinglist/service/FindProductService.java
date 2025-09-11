@@ -4,7 +4,7 @@ import com.shoppinglist.dto.ResponseProductDto;
 import com.shoppinglist.entity.Category;
 import com.shoppinglist.entity.MainResponse;
 import com.shoppinglist.entity.Product;
-import com.shoppinglist.repository.ProductRepositoryInterface;
+import com.shoppinglist.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class FindProductService {
 
-    private ProductRepositoryInterface repository;
+    private ProductRepository repository;
     private FindCategoryService findCategoryService;
 
     public MainResponse<List<ResponseProductDto>> findAll() {
