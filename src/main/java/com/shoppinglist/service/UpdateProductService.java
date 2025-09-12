@@ -25,7 +25,7 @@ public class UpdateProductService {
             return new MainResponse<>(HttpStatus.NOT_FOUND, "Product with id [" + request.getId() + "] not found", null);
         }
         String nameForCheck = request.getName();
-        if (!isProductNameUnique(nameForCheck)) {
+        if (!isProductNameUnique(nameForCheck) && !productOptional.get().getName().equals(nameForCheck)) {
             return new MainResponse<>(HttpStatus.BAD_REQUEST, "Product with name [" + nameForCheck + "] already exist", null);
         }
 

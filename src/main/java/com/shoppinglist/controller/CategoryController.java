@@ -30,7 +30,7 @@ public class CategoryController {
      * @return ResponseEntity with status and category dto if the category was added successfully,
      *         or status otherwise
      */
-    @PostMapping("/new")
+    @PostMapping("")
     public ResponseEntity<ResponseCategoryDto> addNewCategory(@RequestBody RequestAddCategoryDto request){
         MainResponse<ResponseCategoryDto> response = addCategoryService.addCategory(request);
         if (response.getStatus().is2xxSuccessful()) {

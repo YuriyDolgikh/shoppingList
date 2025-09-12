@@ -20,8 +20,8 @@ public class ProductController {
     private UpdateProductService updateProductService;
     private DeleteProductService deleteProductService;
 
-    @PostMapping("/new")
-    public ResponseEntity<ResponseProductDto> addNewCategory(@RequestBody RequestAddProductDto request){
+    @PostMapping("")
+    public ResponseEntity<ResponseProductDto> addNewProduct(@RequestBody RequestAddProductDto request){
         MainResponse<ResponseProductDto> response = addProductService.addProduct(request);
         if (response.getStatus().is2xxSuccessful()) {
             return new ResponseEntity<>(response.getResponseObject(), response.getStatus());
