@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +24,10 @@ public class ResponseProductDto {
                 product.getQuantity(),
                 product.isPurchased(),
                 product.getCategory().getName());
+    }
+
+    public static List<ResponseProductDto> toDTOs(List<Product> products){
+        return products.stream().map(ResponseProductDto::toDTO).toList();
     }
 
 }

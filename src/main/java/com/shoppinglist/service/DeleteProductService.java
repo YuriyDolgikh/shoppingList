@@ -1,24 +1,24 @@
 package com.shoppinglist.service;
 
 import com.shoppinglist.dto.ResponseProductDto;
-import com.shoppinglist.entity.MainResponse;
 import com.shoppinglist.entity.Product;
+import com.shoppinglist.exception.NotFoundException;
 import com.shoppinglist.repository.ProductRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class DeleteProductService {
     private ProductRepository repository;
 
-    public MainResponse<ResponseProductDto> deleteProductById(Long id) {
-        Product productForDelete = repository.findById(id).orElse(null);
-        if (productForDelete != null) {
-            repository.deleteById(id);
-            return new MainResponse<>(HttpStatus.OK, "Product with id [" + id + "] successfully deleted", ResponseProductDto.toDTO(productForDelete));
+    public ResponseProductDto deleteProductById(Long id) {
+        Optional<Product> productForDelete = repository.deleteProductById(id);
+        if (productForDelete.isEmpty()) {
+            throw new NotFoundException("Product with id [" + id + "] not found");
         }
-        return new MainResponse<>(HttpStatus.NOT_FOUND, "Product with id [" + id + "] not found", null);
+        return ResponseProductDto.toDTO(productForDelete.get());
     }
 }
