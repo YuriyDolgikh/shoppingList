@@ -2,10 +2,9 @@ package com.shoppinglist.service;
 
 import com.shoppinglist.dto.ResponseCategoryDto;
 import com.shoppinglist.entity.Category;
-import com.shoppinglist.entity.MainResponse;
+import com.shoppinglist.exception.NotFoundException;
 import com.shoppinglist.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,38 +16,27 @@ public class FindCategoryService {
 
     private CategoryRepository repository;
 
-    public MainResponse<List<ResponseCategoryDto>> findAll(){
-        List<ResponseCategoryDto> categoryDtoList = repository.findAll().stream()
-                .map(category -> new ResponseCategoryDto(category.getId(), category.getName()))
-                .toList();
-        if (!categoryDtoList.isEmpty()) {
-            return new MainResponse<>(HttpStatus.OK, "Categories successfully found", categoryDtoList);
-        }else {
-            return new MainResponse<>(HttpStatus.NO_CONTENT, "Categories not found", null);
-        }
+    public List<ResponseCategoryDto> findAll() {
+        return ResponseCategoryDto.toDTOs(repository.findAll());
     }
 
-    public MainResponse<ResponseCategoryDto> findById(Long id){
+    public ResponseCategoryDto findById(Long id) {
         Optional<Category> categoryOptional = repository.findById(id);
-        if (categoryOptional.isPresent()) {
-            return new MainResponse<>(HttpStatus.OK, "Category with id [" + id + "] successfully found", ResponseCategoryDto.toDTO(categoryOptional.get()));
+        if (categoryOptional.isEmpty()) {
+            throw new NotFoundException("Category with id [" + id + "] not found");
         }
-        return new MainResponse<>(HttpStatus.NOT_FOUND, "Category with id [" + id + "] not found", null);
+        return ResponseCategoryDto.toDTO(categoryOptional.get());
     }
 
-    public MainResponse<ResponseCategoryDto> findByName(String name){
+    public ResponseCategoryDto findByName(String name) {
         Optional<Category> categoryOptional = repository.findByName(name);
-        if (categoryOptional.isPresent()) {
-            return new MainResponse<>(HttpStatus.OK, "Category with name [" + name + "] successfully found", ResponseCategoryDto.toDTO(categoryOptional.get()));
+        if (categoryOptional.isEmpty()) {
+            throw new NotFoundException("Category with name [" + name + "] not found");
         }
-        return new MainResponse<>(HttpStatus.NOT_FOUND, "Category with name [" + name + "] not found", null);
+        return ResponseCategoryDto.toDTO(categoryOptional.get());
     }
 
-    public Optional<Category> findByNameForProductServices(String name){
+    public Optional<Category> findByNameForProductServices(String name) {
         return repository.findByName(name);
-    }
-
-    public Optional<Category> findByIdForProductServices(Long id){
-        return repository.findById(id);
     }
 }

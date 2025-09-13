@@ -2,10 +2,9 @@ package com.shoppinglist.service;
 
 import com.shoppinglist.dto.ResponseCategoryDto;
 import com.shoppinglist.entity.Category;
-import com.shoppinglist.entity.MainResponse;
+import com.shoppinglist.exception.NotFoundException;
 import com.shoppinglist.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,12 +14,12 @@ import java.util.Optional;
 public class DeleteCategoryService {
     private CategoryRepository repository;
 
-    public MainResponse<ResponseCategoryDto> deleteCategoryById(Long id){
-        Category categoryForDelete = repository.findById(id).orElse(null);
-        if (categoryForDelete != null) {
-            repository.deleteById(id);
-            return new MainResponse<>(HttpStatus.OK, "Category with id [" + id + "] successfully deleted", ResponseCategoryDto.toDTO(categoryForDelete));
+    public ResponseCategoryDto deleteCategoryById(Long id) {
+        Optional<Category> categoryForDeleteOptional = repository.findById(id);
+        if (categoryForDeleteOptional.isEmpty()) {
+            throw new NotFoundException("Category with id [" + id + "] not found");
         }
-        return new MainResponse<>(HttpStatus.NOT_FOUND, "Category with id [" + id + "] not found", null);
+        repository.deleteById(id);
+        return ResponseCategoryDto.toDTO(categoryForDeleteOptional.get());
     }
 }
