@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <!--- добавляем первоначальные данные в таблицы -->
+
+    <changeSet id="insert.default.data.categories" author="Yuriy Dolgikh">
+        <insert tableName="categories">
+            <column name="name" value="DEFAULT"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Fruit"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Vegetables"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Dairy"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Meat"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Seafood"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Grains"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Canned"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Grocery"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Oils"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Spices"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Beverages"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Frozen"/>
+        </insert>
+        <insert tableName="categories">
+            <column name="name" value="Snacks"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert.default.data.products" author="Yuriy Dolgikh">
+        <insert tableName="products">
+            <column name="name" value="Apples"/>
+            <column name="quantity" value="2"/>
+            <column name="purchased" value="0"/>
+            <column name="category_id" value="2"/>
+        </insert>
+        <insert tableName="products">
+            <column name="name" value="Milk 1.5%"/>
+            <column name="quantity" value="1"/>
+            <column name="purchased" value="0"/>
+            <column name="category_id" value="4"/>
+        </insert>
+        <insert tableName="products">
+            <column name="name" value="Sugar"/>
+            <column name="quantity" value="0.5"/>
+            <column name="purchased" value="0"/>
+            <column name="category_id" value="7"/>
+        </insert>
+        <insert tableName="products">
+            <column name="name" value="Olive oil"/>
+            <column name="quantity" value="1"/>
+            <column name="purchased" value="0"/>
+            <column name="category_id" value="8"/>
+        </insert>
+        <insert tableName="products">
+            <column name="name" value="Cheese Edam"/>
+            <column name="quantity" value="0.3"/>
+            <column name="purchased" value="0"/>
+            <column name="category_id" value="4"/>
+        </insert>
+        <insert tableName="products">
+            <column name="name" value="Apple juice"/>
+            <column name="quantity" value="3"/>
+            <column name="purchased" value="0"/>
+            <column name="category_id" value="12"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

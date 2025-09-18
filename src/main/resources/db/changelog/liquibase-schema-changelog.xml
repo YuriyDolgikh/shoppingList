@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <!--- добавляем наши изменения -->
+
+    <changeSet id="create.table.categories" author="Yuriy Dolgikh">
+        <createTable tableName="categories">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR (255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create.table.products" author="Yuriy Dolgikh">
+        <createTable tableName="products">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar (255)"/>
+            <column name="purchased" type="boolean"/>
+            <column name="quantity" type="double"/>
+            <column name="category_id" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="products" baseColumnNames="category_id"
+                                 constraintName="fk_products_category_id"
+                                 referencedTableName="categories"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>
+
+        <!--- При переходе на prod
+        в обязательном порядке описываем создание ВСЕХ таблиц (даже без первоначальных данных)
+        и в hibernate отключаем ddl-auto = none
+        -->
